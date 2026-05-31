@@ -1,17 +1,18 @@
 ﻿using System.Windows;
-using WarehouseApp.Services;
 using WarehouseApp.Models;
+using WarehouseApp.Services;
+using WarehouseApp.Services.Interfaces;
 
 namespace WarehouseApp.Views
 {
     public partial class LoginWindow : Window
     {
-        private DatabaseAdapter dbAdapter;
+        private IDatabaseFacade _facade;
 
         public LoginWindow()
         {
             InitializeComponent();
-            dbAdapter = new DatabaseAdapter();
+            _facade = new DatabaseFacade();
         }
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
@@ -26,7 +27,7 @@ namespace WarehouseApp.Views
                 return;
             }
 
-            User user = dbAdapter.AuthenticateUser(login, password);
+            User user = _facade.Auth.AuthenticateUser(login, password);
 
             if (user == null)
             {
@@ -39,12 +40,12 @@ namespace WarehouseApp.Views
 
             if (user.Role == "admin")
             {
-                AdminMainWindow adminWindow = new AdminMainWindow(user, dbAdapter);
+                AdminMainWindow adminWindow = new AdminMainWindow(user, _facade);
                 adminWindow.Show();
             }
             else
             {
-                UserMainWindow userWindow = new UserMainWindow(user, dbAdapter);
+                UserMainWindow userWindow = new UserMainWindow(user, _facade);
                 userWindow.Show();
             }
 

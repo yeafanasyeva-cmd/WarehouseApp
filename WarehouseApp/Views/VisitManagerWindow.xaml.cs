@@ -2,30 +2,30 @@
 using System.Windows;
 using System.Windows.Controls;
 using WarehouseApp.Models;
-using WarehouseApp.Services;
+using WarehouseApp.Services.Interfaces;
 
 namespace WarehouseApp.Views
 {
     public partial class VisitManagerWindow : Window
     {
-        private DatabaseAdapter dbAdapter;
+        private IDatabaseFacade _facade;
 
-        public VisitManagerWindow(DatabaseAdapter adapter)
+        public VisitManagerWindow(IDatabaseFacade facade)
         {
             InitializeComponent();
-            dbAdapter = adapter;
+            _facade = facade;
             LoadVisits();
             LoadActiveRents();
         }
 
         private void LoadVisits()
         {
-            dgVisits.ItemsSource = dbAdapter.GetAllVisits();
+            dgVisits.ItemsSource = _facade.Visits.GetAllVisits();
         }
 
         private void LoadActiveRents()
         {
-            var rents = dbAdapter.GetActiveRents();
+            var rents = _facade.Rents.GetActiveRents();
             cmbRents.ItemsSource = rents;
             if (rents.Any())
                 cmbRents.SelectedIndex = 0;
@@ -118,7 +118,7 @@ namespace WarehouseApp.Views
                 var selectedRent = cmbRents.SelectedItem as RentHistory;
                 if (selectedRent != null)
                 {
-                    if (dbAdapter.AddVisit(selectedRent.Id, txtFirstName.Text, txtLastName.Text, txtCompany.Text, txtCarNumber.Text))
+                    if (_facade.Visits.AddVisit(selectedRent.Id, txtFirstName.Text, txtLastName.Text, txtCompany.Text, txtCarNumber.Text))
                     {
                         MessageBox.Show("Посещение успешно добавлено", "Успех",
                             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -146,7 +146,7 @@ namespace WarehouseApp.Views
                 if (MessageBox.Show("Удалить посещение?", "Подтверждение",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    if (dbAdapter.DeleteVisit(visit.Id))
+                    if (_facade.Visits.DeleteVisit(visit.Id))
                     {
                         MessageBox.Show("Посещение удалено", "Успех",
                             MessageBoxButton.OK, MessageBoxImage.Information);

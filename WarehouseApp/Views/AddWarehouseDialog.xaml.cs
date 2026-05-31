@@ -1,26 +1,26 @@
 ﻿using System.Windows;
 using WarehouseApp.Models;
-using WarehouseApp.Services;
+using WarehouseApp.Services.Interfaces;
 
 namespace WarehouseApp.Views
 {
     public partial class AddWarehouseDialog : Window
     {
-        private DatabaseAdapter dbAdapter;
-        private Warehouse editingWarehouse;
+        private IDatabaseFacade _facade;
+        private Warehouse _editingWarehouse;
 
-        public AddWarehouseDialog(DatabaseAdapter adapter, Warehouse warehouse = null)
+        public AddWarehouseDialog(IDatabaseFacade facade, Warehouse warehouse = null)
         {
             InitializeComponent();
-            dbAdapter = adapter;
-            editingWarehouse = warehouse;
+            _facade = facade;
+            _editingWarehouse = warehouse;
 
-            if (editingWarehouse != null)
+            if (_editingWarehouse != null)
             {
                 Title = "Редактирование помещения";
-                txtName.Text = editingWarehouse.Name;
-                txtAddress.Text = editingWarehouse.Address;
-                txtConditions.Text = editingWarehouse.SpecialConditions;
+                txtName.Text = _editingWarehouse.Name;
+                txtAddress.Text = _editingWarehouse.Address;
+                txtConditions.Text = _editingWarehouse.SpecialConditions;
             }
         }
 
@@ -33,13 +33,13 @@ namespace WarehouseApp.Views
                 return;
             }
 
-            if (editingWarehouse != null)
+            if (_editingWarehouse != null)
             {
-                editingWarehouse.Name = txtName.Text;
-                editingWarehouse.Address = txtAddress.Text;
-                editingWarehouse.SpecialConditions = txtConditions.Text;
+                _editingWarehouse.Name = txtName.Text;
+                _editingWarehouse.Address = txtAddress.Text;
+                _editingWarehouse.SpecialConditions = txtConditions.Text;
 
-                if (dbAdapter.UpdateWarehouse(editingWarehouse))
+                if (_facade.Warehouses.UpdateWarehouse(_editingWarehouse))
                 {
                     MessageBox.Show("Информация о помещении успешно изменена", "Успех",
                         MessageBoxButton.OK, MessageBoxImage.Information);
@@ -61,7 +61,7 @@ namespace WarehouseApp.Views
                     SpecialConditions = txtConditions.Text
                 };
 
-                if (dbAdapter.AddWarehouse(warehouse))
+                if (_facade.Warehouses.AddWarehouse(warehouse))
                 {
                     DialogResult = true;
                     Close();

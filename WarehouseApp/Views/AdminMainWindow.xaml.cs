@@ -1,19 +1,19 @@
 ﻿using System.Windows;
 using WarehouseApp.Models;
-using WarehouseApp.Services;
+using WarehouseApp.Services.Interfaces;
 
 namespace WarehouseApp.Views
 {
     public partial class AdminMainWindow : Window
     {
-        private User currentUser;
-        private DatabaseAdapter dbAdapter;
+        private User _currentUser;
+        private IDatabaseFacade _facade;
 
-        public AdminMainWindow(User user, DatabaseAdapter adapter)
+        public AdminMainWindow(User user, IDatabaseFacade facade)
         {
             InitializeComponent();
-            currentUser = user;
-            dbAdapter = adapter;
+            _currentUser = user;
+            _facade = facade;
             LoadData();
 
             dgRequests.SelectionChanged += (s, e) => UpdateButtons();
@@ -22,8 +22,8 @@ namespace WarehouseApp.Views
 
         private void LoadData()
         {
-            dgRequests.ItemsSource = dbAdapter.GetPendingRequests();
-            dgWarehouses.ItemsSource = dbAdapter.GetAllWarehouses();
+            dgRequests.ItemsSource = _facade.Rents.GetPendingRequests();
+            dgWarehouses.ItemsSource = _facade.Warehouses.GetAllWarehouses();
         }
 
         private void UpdateButtons()
@@ -36,7 +36,7 @@ namespace WarehouseApp.Views
 
         private void BtnAddWarehouse_Click(object sender, RoutedEventArgs e)
         {
-            var addWindow = new AddWarehouseDialog(dbAdapter);
+            var addWindow = new AddWarehouseDialog(_facade);
             if (addWindow.ShowDialog() == true)
             {
                 MessageBox.Show("Помещение успешно добавлено в систему", "Успех",
@@ -50,7 +50,7 @@ namespace WarehouseApp.Views
             var request = dgRequests.SelectedItem as RentHistory;
             if (request != null)
             {
-                if (dbAdapter.ApproveRentRequest(request.Id, currentUser.Id))
+                if (_facade.Rents.ApproveRentRequest(request.Id, _currentUser.Id))
                 {
                     MessageBox.Show("Заявка одобрена", "Успех",
                         MessageBoxButton.OK, MessageBoxImage.Information);
@@ -67,7 +67,7 @@ namespace WarehouseApp.Views
                 if (MessageBox.Show("Отклонить заявку?", "Подтверждение",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    if (dbAdapter.RejectRentRequest(request.Id))
+                    if (_facade.Rents.RejectRentRequest(request.Id))
                     {
                         MessageBox.Show("Заявка отклонена", "Успех",
                             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -82,7 +82,7 @@ namespace WarehouseApp.Views
             var warehouse = dgWarehouses.SelectedItem as Warehouse;
             if (warehouse != null)
             {
-                var editWindow = new AddWarehouseDialog(dbAdapter, warehouse);
+                var editWindow = new AddWarehouseDialog(_facade, warehouse);
                 if (editWindow.ShowDialog() == true)
                 {
                     LoadData();
@@ -98,7 +98,7 @@ namespace WarehouseApp.Views
                 if (MessageBox.Show($"Удалить помещение \"{warehouse.Name}\"?", "Подтверждение",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    if (dbAdapter.DeleteWarehouse(warehouse.Id))
+                    if (_facade.Warehouses.DeleteWarehouse(warehouse.Id))
                     {
                         MessageBox.Show("Помещение успешно удалено", "Успех",
                             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -110,7 +110,7 @@ namespace WarehouseApp.Views
 
         private void BtnVisits_Click(object sender, RoutedEventArgs e)
         {
-            var visitsWindow = new VisitManagerWindow(dbAdapter);
+            var visitsWindow = new VisitManagerWindow(_facade);
             visitsWindow.ShowDialog();
         }
 
