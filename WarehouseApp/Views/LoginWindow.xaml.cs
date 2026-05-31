@@ -52,6 +52,15 @@ namespace WarehouseApp.Views
             this.Close();
         }
 
+        private void BtnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            var registerWindow = new RegisterWindow(_facade);
+            if (registerWindow.ShowDialog() == true)
+            {
+                txtLogin.Focus();
+            }
+        }
+
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

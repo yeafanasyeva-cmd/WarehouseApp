@@ -172,5 +172,49 @@ namespace WarehouseApp.Services
                 }
             }
         }
+
+        public List<RentHistory> GetUserRentRequests(int userId)
+        {
+            var requests = new List<RentHistory>();
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = @"SELECT rh.*, w.name as warehouse_name, u.full_name as user_name,
+                                a.full_name as approved_by_name
+                        FROM renthistory rh
+                        JOIN warehouses w ON rh.warehouse_id = w.id
+                        JOIN users u ON rh.user_id = u.id
+                        LEFT JOIN users a ON rh.approved_by = a.id
+                        WHERE rh.user_id = @userId
+                        ORDER BY rh.request_date DESC";
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            requests.Add(new RentHistory
+                            {
+                                Id = reader.GetInt32(0),
+                                WarehouseId = reader.GetInt32(1),
+                                WarehouseName = reader.GetString(10),
+                                UserId = reader.GetInt32(2),
+                                UserName = reader.GetString(11),
+                                Status = reader.GetString(3),
+                                RequestDate = reader.GetDateTime(4),
+                                ApprovedDate = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5),
+                                ApprovedBy = reader.IsDBNull(6) ? (int?)null : reader.GetInt32(6),
+                                ApprovedByName = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                SpecialConditions = reader.IsDBNull(7) ? null : reader.GetString(7),
+                                RentStartDate = reader.IsDBNull(8) ? (DateTime?)null : reader.GetDateTime(8),
+                                RentEndDate = reader.IsDBNull(9) ? (DateTime?)null : reader.GetDateTime(9)
+                            });
+                        }
+                    }
+                }
+            }
+            return requests;
+        }
     }
 }

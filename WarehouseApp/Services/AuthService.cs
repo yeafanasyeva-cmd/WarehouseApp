@@ -42,5 +42,39 @@ namespace WarehouseApp.Services
             }
             return null;
         }
+
+        public bool IsLoginExists(string login)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM users WHERE login = @login";
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@login", login);
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
+        public bool RegisterUser(string login, string password, string fullName, string company, string role)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = @"INSERT INTO users (login, password, role, full_name, company)
+                                VALUES (@login, @password, @role, @fullName, @company)";
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@login", login);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@role", role);
+                    cmd.Parameters.AddWithValue("@fullName", (object)fullName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@company", (object)company ?? DBNull.Value);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
     }
 }
