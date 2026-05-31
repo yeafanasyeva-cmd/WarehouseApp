@@ -1,0 +1,33 @@
+﻿<Window x:Class="WarehouseApp.Views.CreateRequestDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Создание заявки" Height="348" Width="450"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Создание заявки на аренду" 
+                   FontSize="16" FontWeight="Bold" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+        <GroupBox Grid.Row="1" Header="Выбранное помещение" Margin="0,5">
+            <StackPanel>
+                <TextBlock Text="{Binding SelectedWarehouse.Name, StringFormat='Название: {0}'}" Margin="5"/>
+                <TextBlock Text="{Binding SelectedWarehouse.Address, StringFormat='Адрес: {0}'}" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <TextBlock Grid.Row="2" Text="Дополнительные условия (необязательно):" Margin="0,5"/>
+        <TextBox x:Name="txtSpecialConditions" Grid.Row="3" Margin="0,5" Height="60" TextWrapping="Wrap"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20">
+            <Button x:Name="btnSubmit" Content="Отправить заявку" Width="120" Height="35" Margin="5" Click="BtnSubmit_Click"/>
+            <Button x:Name="btnCancel" Content="Отмена" Width="100" Height="35" Margin="5" Click="BtnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

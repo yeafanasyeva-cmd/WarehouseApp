@@ -1,0 +1,33 @@
+﻿<Window x:Class="WarehouseApp.Views.AddWarehouseDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добавление помещения" Height="350" Width="500"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Добавление нового складского помещения" 
+                   FontSize="16" FontWeight="Bold" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+        <TextBlock Grid.Row="1" Text="Название помещения:" Margin="0,5"/>
+        <TextBox x:Name="txtName" Grid.Row="2" Margin="0,5" Height="30"/>
+
+        <TextBlock Grid.Row="3" Text="Адрес:" Margin="0,5"/>
+        <TextBox x:Name="txtAddress" Grid.Row="4" Margin="0,5" Height="30"/>
+
+        <TextBlock Grid.Row="5" Text="Особые условия:" Margin="0,5"/>
+        <TextBox x:Name="txtConditions" Grid.Row="5" Margin="0,25,0,0" Height="60" TextWrapping="Wrap"/>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,94,0,-54">
+            <Button x:Name="btnSave" Content="Сохранить" Width="100" Height="35" Margin="5" Click="BtnSave_Click"/>
+            <Button x:Name="btnCancel" Content="Отмена" Width="100" Height="35" Margin="5" Click="BtnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

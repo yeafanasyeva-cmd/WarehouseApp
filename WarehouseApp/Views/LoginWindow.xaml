@@ -1,0 +1,24 @@
+﻿<Window x:Class="WarehouseApp.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Вход в систему" Height="320" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="218.2"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Вход в систему" 
+                   FontSize="16" FontWeight="Bold" Margin="0,0,0,197" HorizontalAlignment="Center"/>
+
+        <TextBlock Text="Логин:" Margin="0,46,0,156"/>
+        <TextBox x:Name="txtLogin" Margin="0,72,0,116" Height="30"/>
+
+        <TextBlock Text="Пароль:" Margin="0,112,0,90"/>
+        <PasswordBox x:Name="txtPassword" Margin="0,139,0,49" Height="30"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,197,0,-24">
+            <Button x:Name="btnLogin" Content="Вход" Width="100" Height="35" Margin="5" Click="BtnLogin_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

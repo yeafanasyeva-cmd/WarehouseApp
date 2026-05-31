@@ -1,0 +1,39 @@
+﻿<Window x:Class="WarehouseApp.Views.UserMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Пользователь - Складские помещения" Height="500" Width="700"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Доступные складские помещения" 
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+
+        <!-- Список доступных помещений -->
+        <DataGrid x:Name="dgWarehouses" Grid.Row="1" AutoGenerateColumns="False" 
+                  SelectionMode="Single" SelectionUnit="FullRow"
+                  Margin="5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="150"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="250"/>
+                <DataGridTextColumn Header="Особые условия" Binding="{Binding SpecialConditions}" Width="250"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5,10" HorizontalAlignment="Center">
+            <Button x:Name="btnCreateRequest" Content="Создать заявку на аренду" Width="180" Height="35" Margin="5" 
+                    Click="BtnCreateRequest_Click" Background="LightGreen"/>
+            <Button x:Name="btnDetails" Content="Подробнее о помещении" Width="150" Height="35" Margin="5" Click="BtnDetails_Click"/>
+        </StackPanel>
+
+        <!-- Кнопка выхода внизу -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
+            <Button x:Name="btnExit" Content="Выход" Width="100" Height="35" Margin="5" Click="BtnExit_Click" Background="LightCoral"/>
+        </StackPanel>
+    </Grid>
+</Window>

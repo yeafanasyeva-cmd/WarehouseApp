@@ -1,0 +1,65 @@
+﻿<Window x:Class="WarehouseApp.Views.AdminMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Администратор - Менеджер складских помещений" Height="568" Width="808"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10,10,10,13">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="514.04"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Менеджер складских помещений" 
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,490" HorizontalAlignment="Center"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="581,39,0,430">
+            <Button x:Name="btnVisits" Content="Управление посещениями" Width="180" Height="35" Margin="5" 
+                    Click="BtnVisits_Click" Background="LightBlue"/>
+        </StackPanel>
+
+        <TabControl Margin="0,99,0,130">
+            <TabItem Header="Заявки на одобрение">
+                <DataGrid x:Name="dgRequests" AutoGenerateColumns="False" 
+                          SelectionMode="Single" SelectionUnit="FullRow"
+                          Margin="5" Height="300">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Помещение" Binding="{Binding WarehouseName}" Width="150"/>
+                        <DataGridTextColumn Header="Заявитель" Binding="{Binding UserName}" Width="120"/>
+                        <DataGridTextColumn Header="Особые условия" Binding="{Binding SpecialConditions}" Width="250"/>
+                        <DataGridTextColumn Header="Дата заявки" Binding="{Binding RequestDate, StringFormat=\{0:dd.MM.yyyy\}}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Список помещений">
+                <DataGrid x:Name="dgWarehouses" AutoGenerateColumns="False" 
+                          SelectionMode="Single" SelectionUnit="FullRow"
+                          Margin="5" Height="300">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="150"/>
+                        <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="250"/>
+                        <DataGridTextColumn Header="Особые условия" Binding="{Binding SpecialConditions}" Width="250"/>
+                        <DataGridTextColumn Header="Дата добавления" Binding="{Binding CreatedAt, StringFormat=\{0:dd.MM.yyyy\}}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <WrapPanel Margin="0,404,0,65" HorizontalAlignment="Center">
+            <Button x:Name="btnAddWarehouse" Content="Добавить помещение" Width="140" Height="35" Margin="5" 
+                    Click="BtnAddWarehouse_Click" Background="LightGreen"/>
+            <Button x:Name="btnApprove" Content="Одобрить заявку" Width="120" Height="35" Margin="5" 
+                    IsEnabled="False" Click="BtnApprove_Click"/>
+            <Button x:Name="btnDeleteRequest" Content="Отклонить заявку" Width="120" Height="35" Margin="5" 
+                    IsEnabled="False" Click="BtnDeleteRequest_Click"/>
+            <Button x:Name="btnEdit" Content="Редактировать" Width="120" Height="35" Margin="5" 
+                    IsEnabled="False" Click="BtnEdit_Click"/>
+            <Button x:Name="btnDelete" Content="Удалить помещение" Width="140" Height="35" Margin="5" 
+                    IsEnabled="False" Click="BtnDelete_Click"/>
+        </WrapPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,469,0,10"/>
+
+        <StatusBar VerticalAlignment="Top" Margin="0,492,0,0"/>
+        <Button x:Name="btnExit" Content="Выход" Click="BtnExit_Click" Background="LightCoral" Margin="631,464,49,0" Height="35" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
